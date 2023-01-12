@@ -83,7 +83,7 @@
             const store = useBookingStore();
 
             // 計算天數和金錢
-            let dayCount = ref(0);
+            let dayCount = ref(1);
             function calculateDate() {
                 let y1 = store.getBookingData.rentalDate.split('-')[0];
                 let m1 = store.getBookingData.rentalDate.split('-')[1];
@@ -95,8 +95,11 @@
                 let d2 = store.getBookingData.returnDate.split('-')[2];
                 let time2 = new Date(y2, m2, d2);
 
-                if(time2 > time1) {
+                if(time2 >= time1) {
                     dayCount.value = Math.ceil((time2 - time1)/1000/60/60/24);
+                    if(dayCount.value === 0) { //當日算一天
+                        dayCount.value = 1; 
+                    }
                 }else {
                     alert('日期選擇不正確，請重新選擇日期');
                     context.emit('hideRsv', false);
